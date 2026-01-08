@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+    <button onclick="toggleDarkMode()">Dark Mode</button>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="resources.html">Resources</a>
+    <a href="discussion.html">Discussion</a>
+    <a href="admin.html">Admin</a>
+</nav>
+
+<div class="container">
+    <h2 id="welcome"></h2>
+    <p id="roleText"></p>
+</div>
+
+<script>
+    const username = localStorage.getItem("username");
+    const role = localStorage.getItem("role");
+
+    document.getElementById("welcome").innerText =
+        "Welcome, " + username;
+
+    document.getElementById("roleText").innerText =
+        "Role: " + role.toUpperCase();
+</script>
+
+</body>
+</html>

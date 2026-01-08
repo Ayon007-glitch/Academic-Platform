@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resources</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="resources.html">Resources</a>
+    <a href="discussion.html">Discussion</a>
+    <button onclick="toggleDarkMode()">Dark Mode</button>
+</nav>
+
+<div class="container">
+    <h2>Upload Resource</h2>
+
+    <input type="text" id="title" placeholder="Resource Title">
+
+    <select id="category">
+        <option>Math</option>
+        <option>CS</option>
+        <option>Electronics</option>
+    </select>
+
+    <button onclick="addResource()">Upload</button>
+</div>
+
+<div class="container">
+    <h2>Search Resources</h2>
+
+    <input type="text" id="searchInput" placeholder="Search by title" onkeyup="displayResources()">
+
+    <select id="filterCategory" onchange="displayResources()">
+        <option value="all">All Categories</option>
+        <option value="Math">Math</option>
+        <option value="CS">CS</option>
+        <option value="Electronics">Electronics</option>
+    </select>
+</div>
+
+<div id="resourceList"></div>
+
+<script>
+    let resources = JSON.parse(localStorage.getItem("resources")) || [];
+
+    function addResource() {
+        const title = document.getElementById("title").value;
+        const category = document.getElementById("category").value;
+
+        if (title === "") {
+            alert("Enter resource title");
+            return;
+        }
+
+        resources.push({ title, category });
+        localStorage.setItem("resources", JSON.stringify(resources));
+        displayResources();
+    }
+
+    function displayResources() {
+        const list = document.getElementById("resourceList");
+        const searchText = document.getElementById("searchInput").value.toLowerCase();
+        const selectedCategory = document.getElementById("filterCategory").value;
+
+        list.innerHTML = "";
+
+        resources
+            .filter(r => r.title.toLowerCase().includes(searchText))
+            .filter(r => selectedCategory === "all" || r.category === selectedCategory)
+            .forEach(r => {
+                list.innerHTML += `
+                    <div class="card">
+                        <h3>${r.title}</h3>
+                        <p>Category: ${r.category}</p>
+                    </div>
+                `;
+            });
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+        } else {
+            localStorage.setItem("theme", "light");
+        }
+    }
+
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+
+    displayResources();
+</script>
+
+</body>
+</html>

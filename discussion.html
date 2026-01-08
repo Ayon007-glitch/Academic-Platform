@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discussion</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+    <button onclick="toggleDarkMode()">Dark Mode</button>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="resources.html">Resources</a>
+</nav>
+
+<div class="container">
+    <h2>Discussion Forum</h2>
+
+    <textarea id="comment" placeholder="Write a comment"></textarea>
+    <button onclick="addComment()">Post</button>
+</div>
+
+<div id="comments"></div>
+
+<script>
+    let comments = JSON.parse(localStorage.getItem("comments")) || [];
+
+    function addComment() {
+        const text = document.getElementById("comment").value;
+        comments.push(text);
+        localStorage.setItem("comments", JSON.stringify(comments));
+        showComments();
+    }
+
+    function showComments() {
+        const div = document.getElementById("comments");
+        div.innerHTML = "";
+        comments.forEach(c => {
+            div.innerHTML += `<div class="card">${c}</div>`;
+        });
+    }
+
+    showComments();
+</script>
+
+</body>
+</html>
